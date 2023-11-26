@@ -57,8 +57,8 @@ async function main() {
     // const user = await prisma.user.findUnique({
     //     where: {
     //         username_email: {
-    //             username: 'Kinka',
-    //             email: 'kinka@im.io'
+    //             username: 'Alacap',
+    //             email: 'alacap@aa.io'
     //         }
     //     }
     // })
@@ -165,15 +165,31 @@ async function main() {
     //     }
     // })
 
-    const posts = await prisma.post.findMany({
-        where: {
-            author: {
-                is: {
-                    age: 27
-                }
-            }
-        }
-    })
+    // const postA = await prisma.post.create({
+    //     data: {
+    //         title: "Ayce Test",
+    //         body: "Hey this is a test post",
+    //         authorId: user?.id
+    //     }
+    // })
+
+    // const postB = await prisma.post.create({
+    //     data: {
+    //         title: "Ayce Title",
+    //         body: "Hey this is another test post",
+    //         authorId: user?.id
+    //     }
+    // })
+
+    // const posts = await prisma.post.findMany({
+    //     where: {
+    //         author: {
+    //             is: {
+    //                 age: 28
+    //             }
+    //         }
+    //     }
+    // })
 
     // const updatedUser = await prisma.user.update({
     //     where: { email: "kinka@im.io" },
@@ -226,6 +242,87 @@ async function main() {
     // })
 
     // const posts = await prisma.post.findMany()
+
+    const kinlikedA = await prisma.post.update({
+        where: { id: "8f5b3117-225d-4247-8a30-3a46b4fa6e7a" },
+        data: {
+            likers: {
+                connect: {
+                    id: "359d5434-0827-4a4e-8205-a6ac410e2fed"
+                }
+            }
+        }
+    })
+
+    const kinlikedB = await prisma.post.update({
+        where: { id: "8f5b3117-225d-4247-8a30-3a46b4fa6e7a" },
+        data: {
+            likers: {
+                connect: {
+                    id: "8dab9fe3-7148-4e46-b4ee-cbeade407c47"
+                }
+            }
+        }
+    })
+
+    const ayceliked = await prisma.user.update({
+        where: { id: "8dab9fe3-7148-4e46-b4ee-cbeade407c47" },
+        data: {
+            likedPosts: {
+                connect: {
+                    id: "ca03e3c8-e584-4878-81a2-7f67788f7ebf"
+                }
+            }
+        }
+    })
+
+    const kinlikes = await prisma.user.findMany({
+        where: { username: "Kinka" },
+        select: {
+            likedPosts: {
+                select: { id: true, title: true, body: true, author: true }
+            }
+        }
+    })
+
+    const aycelikes = await prisma.user.findMany({
+        where: { username: "Alacap" },
+        select: {
+            likedPosts: {
+                select: { id: true, title: true, body: true, author: true }
+            }
+        }
+    })
+
+    const kinpostlikers = await prisma.post.findMany({
+        where: { id: "ca03e3c8-e584-4878-81a2-7f67788f7ebf" },
+        select: {
+            likers: {
+                select: { id: true, name: true, username: true, email: true }
+            }
+        }
+    })
+
+    const aycepostlikers = await prisma.post.findMany({
+        where: { id: "8f5b3117-225d-4247-8a30-3a46b4fa6e7a" },
+        select: {
+            likers: {
+                select: { id: true, name: true, username: true, email: true }
+            }
+        }
+    })
+
+    // console.log(kinlikes)
+    // console.log(kinlikes[0].likedPosts)
+
+    // console.log(aycelikes)
+    // console.log(aycelikes[0].likedPosts)
+
+    // console.log(kinpostlikers)
+    // console.log(kinpostlikers[0].likers)
+
+    console.log(aycepostlikers)
+    console.log(aycepostlikers[0].likers)
 
     // const deletedPreferences = await prisma.userPreference.deleteMany()
     // const deletedUsers = await prisma.user.deleteMany()
